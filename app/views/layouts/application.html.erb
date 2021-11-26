@@ -17,15 +17,24 @@
   <body>
     <nav>
       <ul>
-        <li> All users </li>
-        <li> All public photos </li>
-        <li> Sign in </li>
-        <li> Sign up</li>
+        <li> <a href = "/users"> All users </a> </li>
+        <li> <a href = "/photos"> All public photos </a> </li>
+       
+       <%if @current_user ==nil%>
+        <li> <a href = "/user_sign_in">Sign in </a> </li>
+        <li> <a href = "/user_sign_up">Sign up</a></li>
+      <%else%>
+        <li> <a href = "/edit_user_profile"><%=@current_user%></a> </li>
+        <li> <a href = "/user_sign_out">Sign out</a></li>
+       <%end%>
+
+        
       </ul>
 
     </nav>
 
-
+      <p style= "color: green"><%=notice%></p>
+      <p style= "color: red"><%=alert%></p>
 
     <%= yield %>
   </body>
