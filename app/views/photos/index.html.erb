@@ -5,33 +5,24 @@
     </h1>
   </div>
 </div>
-
+<%if @current_user != nil%>
  <form action="/insert_photo" method="post" enctype="multipart/form-data">
       <label for = "query_image"> Image </label>
-      <input type="file" id = "query_image" name="query_image" value="HOLD">        
+      <input type="file" id = "query_image" name="query_image">        
     
       <label for = "caption"> Caption </label>
       <textarea id = "caption" name = "query_caption" placeholder = "Enter a caption for the photo..." ></textarea>
       
+      <input type="hidden" name="query_owner_id" value="<%=@current_user.id%>">        
+      <input type="hidden" name="query_likes_count" value= 0 >        
+      <input type="hidden" name="query_comments_count" value= 0 >        
+
     <button>
       Add photo
     </button>
 </form>
-<%# 
-<div>
-        <label for="title_box">
-          Title
-        </label>
+<%end%>
 
-        <input type="text" id="title_box" name="query_title">
-      </div> %>
-
-<%# the_photo = Photo.new
-    the_photo.image = params.fetch("query_image")
-    the_photo.caption = params.fetch("query_caption")
-    the_photo.owner_id = params.fetch("query_owner_id")
-    the_photo.likes_count = params.fetch("query_likes_count")
-    the_photo.comments_count = params.fetch("query_comments_count") %>
 
 					
 <hr>
