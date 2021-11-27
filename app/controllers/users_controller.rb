@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     matching_users = User.where({ :username => the_username })
     @the_user = matching_users.at(0)
     
-    likes = Like.where({:fan_id => @current_user.id})
+    likes = Like.where({:fan_id => @the_user.id})
     photo_ids = Array.new
       likes.each do |one|
         photo_ids.push(one.photo_id)
