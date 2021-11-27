@@ -1,7 +1,12 @@
 class PhotosController < ApplicationController
   def index
-    matching_photos = Photo.all
+    public_users = User.where({:private => false})
+    read_public_users = Array.new
+      public_users.each do |one|
+        read_public_users.push(one.id)
+      end
 
+    matching_photos = Photo.where({:owner_id => read_public_users})
     @list_of_photos = matching_photos.order({ :created_at => :desc })
     @users = User.all
 

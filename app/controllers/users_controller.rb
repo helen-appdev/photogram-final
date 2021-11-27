@@ -1,4 +1,22 @@
 class UsersController < ApplicationController
+  def liked_photos
+    
+    the_username = params.fetch("path_id")
+    matching_users = User.where({ :username => the_username })
+    @the_user = matching_users.at(0)
+    
+    likes = Like.where({:fan_id => @current_user.id})
+    photo_ids = Array.new
+      likes.each do |one|
+        photo_ids.push(one.photo_id)
+      end
+    @liked_photos = Photo.where({:id => photo_ids})
+      render({:template => "users/liked_photos.html.erb"})
+
+    
+  end
+  
+  
   def index
     matching_users = User.all
 
@@ -63,4 +81,5 @@ class UsersController < ApplicationController
 
     redirect_to("/users", { :notice => "User deleted successfully."} )
   end
+
 end

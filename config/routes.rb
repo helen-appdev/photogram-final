@@ -79,6 +79,8 @@ Rails.application.routes.draw do
   get("/users", { :controller => "users", :action => "index" })
   
   get("/users/:path_id", { :controller => "users", :action => "show" })
+
+  get("/users/:path_id/liked_photos", { :controller => "users", :action => "liked_photos" })
   
   # UPDATE
   

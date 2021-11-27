@@ -40,6 +40,27 @@
           <%following_count = FollowRequest.where({:sender_id => @the_user.id, :status => "accepted"})%>
           <%= following_count.count %>
         </dd>
+      
+      <%if @the_user.id == @current_user.id%>
+          <dt>
+            Edit user
+          </dt>
+            <dd>
+              <form action = "/modify_user" method = "post">
+                
+                
+                  <label for="username">Username</label>
+                  <input id="username" name="query_username" value="<%= @current_user.username %>">
+                
+                  <label for="private">Private?</label>
+                  <input id="private" name="query_private" type="checkbox">
+                <button>Update user</button>
+              </form>
+            </dd>
+        <%else%>
+        <%end%>
+
+
       <ul> 
         <li> <a href = "/users/<%=@the_user.username%>"> Profile</a>  </li>
         <li> <a href = "/users/<%=@the_user.username%>/liked_photos">Liked photos </a> </li>
@@ -67,10 +88,11 @@
       <td> <img src = "<%=photo.image%>"></td>
       <td> <%=@the_user.username%></td>
       <td> <%=photo.caption%> </td>
-      <td> <%= time_ago_in_words(@the_user.created_at) %> ago </td>
+      <td> <%= time_ago_in_words(photo.created_at) %> ago </td>
       <td> <%=photo.likes_count%></td>
       <td> <a href="/photos/<%=photo.id%>">Show details</a></td>
     <%end%>
   </tbody>
 </table>
-      
+
+
