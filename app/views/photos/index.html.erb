@@ -8,7 +8,7 @@
 <%if @current_user != nil%>
  <form action="/insert_photo" method="post" enctype="multipart/form-data">
       <label for = "query_image"> Image </label>
-      <input type="file" id = "query_image" name="query_image">        
+      <input type="file" id = "image2" name="image2" class = "form-control">        
     
       <label for = "caption"> Caption </label>
       <textarea id = "caption" name = "query_caption" placeholder = "Enter a caption for the photo..." ></textarea>
@@ -58,7 +58,13 @@
       <% @list_of_photos.each do |a_photo| %>
       <tr>
         <td>
-          <img src = "<%= a_photo.image %>">
+          <img src = 
+            <%if a_photo.image  !=nil%>
+              "<%= a_photo.image %>">
+              <%else%>
+              "<%= a_photo.image2 %>" class="img-responsive">
+              <%end%>
+          
         </td>
         <td>
           <%= a_photo.caption %>

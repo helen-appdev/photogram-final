@@ -25,7 +25,7 @@ class PhotosController < ApplicationController
 
   def create
     the_photo = Photo.new
-    the_photo.image = params.fetch("query_image")
+    the_photo.image2 = params[:image2] #was query_image
     the_photo.caption = params.fetch("query_caption")
     the_photo.owner_id = params.fetch("query_owner_id")
     the_photo.likes_count = params.fetch("query_likes_count")
