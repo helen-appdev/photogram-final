@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
    #------------------------------
 
-  # Routes for the User account:
+  # Routes for the User authentication account:
 
   # SIGN UP FORM
   get("/user_sign_up", { :controller => "user_authentication", :action => "sign_up_form" })        
@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   
   # DELETE RECORD
   get("/cancel_user_account", { :controller => "user_authentication", :action => "destroy" })
+
+  
 
   # ------------------------------
 
@@ -81,6 +83,8 @@ Rails.application.routes.draw do
   get("/users/:path_id", { :controller => "users", :action => "show" })
 
   get("/users/:path_id/liked_photos", { :controller => "users", :action => "liked_photos" })
+
+  get("/users/:username/feed", { :controller => "users", :action => "feed" })
   
   # UPDATE
   

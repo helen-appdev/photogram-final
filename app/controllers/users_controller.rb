@@ -1,4 +1,20 @@
 class UsersController < ApplicationController
+  def feed
+    the_username = params.fetch("username")
+    matching_users = User.where({ :username => the_username })
+    @the_user = matching_users.at(0)
+    @following = FollowRequest.where({:sender_id => @the_user.id, :status => "accepted"})
+    
+    the_followed = Array.new
+      @following.each do |person|
+        the_followed.push(person.recipient_id)
+        end
+      
+    @following_posts = Photo.where({:owner_id => the_followed})
+      
+    render({:template => "users/feed.html.erb"})
+  end
+  
   def liked_photos
     
     the_username = params.fetch("path_id")
