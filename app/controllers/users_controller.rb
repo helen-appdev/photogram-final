@@ -1,4 +1,24 @@
 class UsersController < ApplicationController
+  def discover
+    the_username = params.fetch("username")
+    matching_users = User.where({ :username => the_username })
+    @the_user = matching_users.at(0)
+    @following = FollowRequest.where({:sender_id => @the_user.id, :status => "accepted"})
+    
+    the_followed = Array.new
+      @following.each do |person|
+        the_followed.push(person.recipient_id)
+        end
+      
+    #this is wrong, needs to become the posts liked by ppl the user is following.. make photo user
+    @discover_posts = Photo.where({:fan_id => the_followed})
+    
+    @discover_owner = User.where({:id => the_followed})
+      
+    render({:template => "users/discover.html.erb"})
+  end
+  
+  
   def feed
     the_username = params.fetch("username")
     matching_users = User.where({ :username => the_username })

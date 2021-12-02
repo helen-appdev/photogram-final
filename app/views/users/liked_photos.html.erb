@@ -85,7 +85,14 @@
     </tr>
     <%@liked_photos.each do |photo|%>
     <tr> 
-      <td> <img src = "<%=photo.image%>"></td>
+      <td> 
+        <img src = 
+            <%if photo.image  !=nil%>
+              "<%= photo.image %>">
+              <%else%>
+              "<%= photo.image2 %>" class="img-responsive">
+              <%end%>
+      </td>
       <td> <%=@the_user.username%></td>
       <td> <%=photo.caption%> </td>
       <td> <%= time_ago_in_words(photo.created_at) %> ago </td>
