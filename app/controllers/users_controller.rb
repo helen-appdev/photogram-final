@@ -11,9 +11,15 @@ class UsersController < ApplicationController
         end
       
     #this is wrong, needs to become the posts liked by ppl the user is following.. make photo user
-    @discover_posts = Photo.where({:fan_id => the_followed})
+    discover_likes = Like.where({:fan_id => the_followed})
+    discover_posts = Array.new
+      discover_likes.each do |person|
+        discover_posts.push(person.photo_id)
+      end
+
+    @discover_photos = Photo.where({:id => discover_posts})
     
-    @discover_owner = User.where({:id => the_followed})
+    
       
     render({:template => "users/discover.html.erb"})
   end
