@@ -69,14 +69,27 @@ class UsersController < ApplicationController
 
   def show
     the_username = params.fetch("path_id")
-    
-    # the_id = params.fetch("path_id")
 
-    # matching_users = User.where({ :id => the_id })
     matching_users = User.where({ :username => the_username })
     @the_user = matching_users.at(0)
 
-    render({ :template => "users/show.html.erb" })
+    @follow = FollowRequest.where({:recipient_id => @the_user.id, :status => "pending"})
+    
+    requests = Array.new
+    @follow.each do |this|
+      requests.push(this.sender_id)
+    end
+
+    @requesters = User.where({:id => requests})
+
+
+    @follow_status = FollowRequest.where({:recipient_id => @the_user.id, :status => "accepted", :sender_id => @current_user.id}).at(0)
+
+    if @the_user.private == false || @follow_status != nil || @the_user == @current_user
+      render({ :template => "users/show.html.erb" })
+    else
+      redirect_to("/", { :alert => "You're not authorized for that." })
+    end
   end
 
   def create
