@@ -1,6 +1,6 @@
 class PhotosController < ApplicationController
   def index
-    public_users = User.where({:private => false})
+    public_users = User.where.not({:private => true})
     read_public_users = Array.new
       public_users.each do |one|
         read_public_users.push(one.id)
@@ -19,13 +19,21 @@ class PhotosController < ApplicationController
     matching_photos = Photo.where({ :id => the_id })
 
     @the_photo = matching_photos.at(0)
+    
+    @owner = User.where({:id => @the_photo.owner_id}).at(0)
+    likes_list = Like.where({:photo_id => @the_photo.id})
+    likers = Array.new
+      likes_list.each do |liker|
+        likers.push(liker.fan_id)
+      end
+    @fans = User.where({:id => likers})
 
     render({ :template => "photos/show.html.erb" })
   end
 
   def create
     the_photo = Photo.new
-    the_photo.image2 = params[:image] #was query_image
+    the_photo.image = params.fetch("image")  #had colon as query_image, the_photo was image2
     the_photo.caption = params.fetch("query_caption")
     the_photo.owner_id = params.fetch("query_owner_id")
     the_photo.likes_count = params.fetch("query_likes_count")
@@ -45,9 +53,9 @@ class PhotosController < ApplicationController
 
     the_photo.image = params.fetch("query_image")
     the_photo.caption = params.fetch("query_caption")
-    the_photo.owner_id = params.fetch("query_owner_id")
-    the_photo.likes_count = params.fetch("query_likes_count")
-    the_photo.comments_count = params.fetch("query_comments_count")
+    # the_photo.owner_id = params.fetch("query_owner_id")
+    # the_photo.likes_count = params.fetch("query_likes_count")
+    # the_photo.comments_count = params.fetch("query_comments_count")
 
     if the_photo.valid?
       the_photo.save
