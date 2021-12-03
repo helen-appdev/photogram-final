@@ -64,77 +64,53 @@
 
         </dd>
 
-Edit photo
-    <form action="/modify_photo/<%= @the_photo.id %>" method="post" enctype="multipart/form-data">
-      <label for="browser_image">Image URL</label>
-      <input id="browser_image" type="file" name="query_image" placeholder="Enter a URL for the image..." value="<%=@the_photo.image%>">
+    <dt>Edit photo </dt>
+    <dd>
+      <form action="/modify_photo/<%= @the_photo.id %>" method="post" enctype="multipart/form-data">
+        <label for="browser_image">Image URL</label>
+        <input id="browser_image" type="file" name="query_image" placeholder="<%=@the_photo.image%>">
+      
+        <label for="browser_caption">Caption</label>
+        <textarea id="browser_caption" name="query_caption" placeholder="Enter a caption for the photo..."> <%=@the_photo.caption%> </textarea>
+      
+        <button>Update photo</button>
+      </form>
+    </dd>
     
-      <label for="browser_caption">Caption</label>
-      <textarea id="browser_caption" name="query_caption" placeholder="Enter a caption for the photo...">Knowledge could be more valuable than gold, more deadly than a dagger.</textarea>
-    
-      <button>Update photo</button>
-    </form>
-    
-    
-    
-
-      <div>
-        <label for="likes_count_box">
-          Likes count
-        </label>
-
-        <input type="text" id="likes_count_box" name="query_likes_count" value="<%= @the_photo.likes_count %>">
-      </div>
-
-
-
-      <div>
+    <dt>Delete photo</dt>
+        <dd>
         <a href="/delete_photo/<%= @the_photo.id %>">
           Delete this photo
         </a>
-      </div>
-    </div>
-
- 
-
-
-  
- 
-
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_photo.updated_at) %> ago
       </dd>
-    </dl>
-  </div>
-</div>
+  </dl>
 
-<hr>
+<h2>Comments</h2>
+<table >
+  <tbody>
+    <tr>
+      <th>Commenter</th>	
+      <th>Comment</th>	
+      <th>Posted</th>
+    </tr>
+      <%comments = Comment.where({:photo_id => @the_photo.id})%>
+      <%comments.each do |comment|%>
+        <tr>
+          <td>
+            <%user = User.where({:id => comment.author_id}).at(0)%>
+            <%=user.username%> </td>
+          <td> <%=comment.body%> </td>
+          <td>  <%=time_ago_in_words(comment.created_at)%> ago </td>
+      <%end%>
+    </tbody>
+  </table>
 
+ <h3>Add a new comment</h3>
+ <form action="/insert_comment" method="post">
+  <input type="hidden" value="<%=@the_photo.id%>" name="query_photo_id">
+  <input type="hidden" value="<%=@current_user.id%>" name="query_author_id">
+  <label for="browser_comment">Comment</label>
+  <textarea id="browser_comment" name="query_body" placeholder="Enter a comment..."></textarea>
 
-<div>
-  <div>
-    <h2>
-      
-    </h2>
-
-
-      <div>
-        <label for="comments_count_box">
-          Comments count
-        </label>
-
-        <input type="text" id="comments_count_box" name="query_comments_count" value="<%= @the_photo.comments_count %>">
-      </div>
-
-      <button>
-        Update photo
-      </button>
-    </form>
-  </div>
-</div>
-
-<hr>
+  <button>Add comment</button>
+</form>
