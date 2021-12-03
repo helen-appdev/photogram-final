@@ -17,5 +17,6 @@ class Photo < ApplicationRecord
       :class_name => "User", 
       :foreign_key => "owner_id"})
 
-      mount_uploader :image2, Image2Uploader
+      # to fix the robohashes not loading, change :image back to :image2
+      mount_uploader :image, ImageUploader
 end

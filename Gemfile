@@ -1,5 +1,10 @@
 #to restart after adding ruby 2.7.3, ran "gem install rails," "bundle install"
 # new space: "rvm use 2.7.3"
+# ------From Jelani--------------------------------------------------------------------------------
+# Run rvm install 2.7.3
+# Run rvm use 2.7.3 --default
+# Run gem install bundler
+# Run bundle install
 
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
