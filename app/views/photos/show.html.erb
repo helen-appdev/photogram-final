@@ -41,7 +41,8 @@
         Comments count
       </dt>
       <dd>
-        <%= @the_photo.comments_count %>
+        <%comments = Comment.where({:photo_id => @the_photo.id})%>
+        <%= comments.count %>
       </dd>
       
       <dt> Fans </dt>
@@ -97,7 +98,7 @@
       <th>Comment</th>	
       <th>Posted</th>
     </tr>
-      <%comments = Comment.where({:photo_id => @the_photo.id})%>
+      
       <%comments.each do |comment|%>
         <tr>
           <td>
