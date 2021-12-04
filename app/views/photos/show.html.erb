@@ -45,8 +45,7 @@
       </dd>
       
       <dt> Fans </dt>
-        <%count = @fans.count%>
-        <%count2 = count-1%>
+
         <dd>
         <%@fans.each do |fan|%>
         <%=fan.username + ", "%> 
@@ -56,11 +55,16 @@
 
       <dt> Add a fan </dt>
         <dd>
-        <form action="/insert_like" method="post">
-          <input type="hidden" value="730" name="query_photo_id">
-          <input type="hidden" value=<%=@current_user.id%> name="query_fan_id">
-          <button>Like</button>
-        </form>
+          
+          <%if @current_user_like == nil%>
+          <form action="/insert_like" method="post">
+            <input type="hidden" value="<%=@the_photo.id%>" name="query_photo_id">
+            <input type="hidden" value=<%=@current_user.id%> name="query_fan_id">
+            <button>Like</button>
+          </form>
+          <%else%>
+          <a href= "/delete_like/<%=@current_user_like.id%>">Unlike</a>
+          <%end%>
 
         </dd>
 

@@ -113,13 +113,14 @@ class UsersController < ApplicationController
     the_id = params.fetch("path_id")
     the_user = User.where({ :id => the_id }).at(0)
 
-    the_user.comments_count = params.fetch("query_comments_count")
     the_user.email = params.fetch("query_email")
+    the_user.comments_count = params.fetch("query_comments_count")
     the_user.likes_count = params.fetch("query_likes_count")
-    the_user.password_digest = params.fetch("query_password_digest")
     the_user.private = params.fetch("query_private", false)
     the_user.username = params.fetch("query_username")
-
+    the_user.password_digest = params.fetch("query_password")
+    
+  
     if the_user.valid?
       the_user.save
       redirect_to("/users/#{the_user.id}", { :notice => "User updated successfully."} )
