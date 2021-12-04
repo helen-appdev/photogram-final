@@ -14,22 +14,27 @@ class PhotosController < ApplicationController
   end
 
   def show
-    the_id = params.fetch("path_id")
+    if @current_user != nil
+      the_id = params.fetch("path_id")
 
-    matching_photos = Photo.where({ :id => the_id })
+      matching_photos = Photo.where({ :id => the_id })
 
-    @the_photo = matching_photos.at(0)
+      @the_photo = matching_photos.at(0)
+      
+      @owner = User.where({:id => @the_photo.owner_id}).at(0)
+      likes_list = Like.where({:photo_id => @the_photo.id})
+      @current_user_like = Like.where({:photo_id => @the_photo.id, :fan_id => @current_user.id}).at(0)
+      likers = Array.new
+        likes_list.each do |liker|
+          likers.push(liker.fan_id)
+        end
+      @fans = User.where({:id => likers})
+      render({ :template => "photos/show.html.erb" })
+    else
+      redirect_to("/user_sign_in", { :alert => "You have to sign in first." })
+    end
+
     
-    @owner = User.where({:id => @the_photo.owner_id}).at(0)
-    likes_list = Like.where({:photo_id => @the_photo.id})
-    @current_user_like = Like.where({:photo_id => @the_photo.id, :fan_id => @current_user.id}).at(0)
-    likers = Array.new
-      likes_list.each do |liker|
-        likers.push(liker.fan_id)
-      end
-    @fans = User.where({:id => likers})
-
-    render({ :template => "photos/show.html.erb" })
   end
 
   def create
@@ -42,7 +47,7 @@ class PhotosController < ApplicationController
 
     if the_photo.valid?
       the_photo.save
-      redirect_to("/photos", { :notice => "Photo created successfully." })
+      redirect_to("/photos", { :notice => "Photo created successfully" })
     else
       redirect_to("/photos", { :notice => "Photo failed to create successfully." })
     end
